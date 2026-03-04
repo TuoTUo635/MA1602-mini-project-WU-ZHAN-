@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "GridWorld.h"
+#include "Config.h"
 
 class Walker {
 private:

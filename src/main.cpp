@@ -6,14 +6,14 @@
 int main() {
     // 设置参数
     SimulationConfig config;
-    config.width = 10;
-    config.height = 10;
+    config.width = 11;
+    config.height = 11;
     config.cellSize = 1.0;
-    config.obstacleMode = SimulationConfig::ObstacleMode::NONE;
+    config.obstacleMode = SimulationConfig::ObstacleMode::RANDOM_DENSITY;
     config.obstacleDensity = 0.1;  // 10%障碍物
     config.numWalkers = 1;
     config.targetCoverage = 0.8;    // 目标覆盖率80%
-    config.maxSteps = 100;
+    config.maxSteps = 10;
     config.moveRule = SimulationConfig::MoveRule::RANDOM;
     config.collisionRule = SimulationConfig::CollisionRule::IGNORE;
     
@@ -27,22 +27,30 @@ int main() {
         MonteCarloSimulator simulator(config);
         simulator.initialize();
         
-        std::cout << "开始模拟...\n";
+        /*
+        // 检查初始状态
+        std::cout << "Initial walkers: " << simulator.getCurrentStep() << std::endl;
+        std::cout << "Initial coverage: " << simulator.getCurrentCoverage() << std::endl;
         
-        while (!simulator.isComplete()) {
-            simulator.simulateStep();
-            
-            // 每100步输出一次状态
-            if (simulator.getCurrentStep() % 100 == 0) {
-                std::cout << "Step: " << simulator.getCurrentStep() 
-                          << ", Coverage: " << simulator.getCurrentCoverage() * 100 << "%\n";
-            }
+        // 如果初始覆盖率为0，说明起点没被标记
+        if (simulator.getCurrentCoverage() == 0.0) {
+            std::cout << "ERROR: Initial coverage is 0! Start points not marked." << std::endl;
         }
         
-        auto result = simulator.getResults();
-        std::cout << "\n模拟完成!\n";
-        std::cout << "总步数: " << result.stepsToComplete << "\n";
-        std::cout << "最终覆盖率: " << result.finalCoverage * 100 << "%\n";
+        // 运行前几步并输出
+        for (int i = 0; i < 10; i++) {
+            simulator.simulateStep();
+            std::cout << "Step " << i << " coverage: " 
+                    << simulator.getCurrentCoverage() << std::endl;
+        }
+        */
+        
+        // 然后继续正常运行
+        while (!simulator.isComplete()) {
+            simulator.simulateStep();
+        }
+        
+        return 0;
         
     } else {
         // 批处理模式
